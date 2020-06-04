@@ -27,6 +27,8 @@ cloud_sql_instance_name = os.environ.get("CLOUD_SQL_INSTANCE_NAME")
 app = Flask(__name__, static_folder='static')
 
 
+#engine = create_engine('postgresql://postgres:Password123@127.0.0.1:5432/project2')
+
 engine = create_engine('postgres://mciflyxdcdqcho:b21b8490e526450b51426d2a26de314af06eba94975a885b678a3d0c70c0445f@ec2-50-17-21-170.compute-1.amazonaws.com:5432/d5g4rqlktctgjs')
 
 #engine =create_engine(f'postgres+pg8000://{db_user}:{db_pass}@/{db_name}?unix_sock=/cloudsql/{cloud_sql_instance_name}/.s.PGSQL.5432')

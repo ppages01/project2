@@ -161,6 +161,45 @@ Chart.pluginService.register({
 /////////////////////////////////
 
 function plotMap(api_call3){
+
+  //#####Call the api and pull the lat/lng
+var jsonurl = api_call3
+  
+  
+ 
+d3.json(jsonurl).then((data) => {
+  JSONItems = data.result;
+  
+  //console.log(JSONItems)
+  revenue = []
+  lat = []
+  lng = []
+  city = []
+  avgprice = []
+  for (let i = 0; i < JSONItems.length; i++) {
+      lat.push(JSONItems[i].lat)
+      lng.push(JSONItems[i].lng)
+      city.push(JSONItems[i].city)
+      revenue.push(JSONItems[i].sum)
+      avgprice.push(JSONItems[i].avg)
+
+  
+  
+  L.circle([JSONItems[i].lat, JSONItems[i].lng],{
+    radius: 2*JSONItems[i].sum,
+    //color: getColor(features[i].properties.mag),
+    color:'green',
+    fillcolor: 'black',
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  })
+  .bindPopup("<h3> City " + JSONItems[i].city + "<br/>Revenue: " + JSONItems[i].sum + "<br/>Avg Unit Price:" + JSONItems[i].avg)
+  .addTo(mymap);
+  
+  }    
+});
+
   //var mymap = L.map('mapid').setView([37.09, -95.71], 4);
   //Below if statement will force reload upon init and optionchanges.
   var mymap = L.DomUtil.get('mapid');
@@ -180,48 +219,12 @@ function plotMap(api_call3){
   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
     '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
     'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-  id: 'mapbox/streets-v11',
+  id: 'mapbox/light-v9',
   tileSize: 512,
   zoomOffset: -1,
   accessToken: API_KEY
 }).addTo(mymap);
-//#####Call the api and pull the lat/lng
-var jsonurl = api_call3
-  
-  
- 
-  d3.json(jsonurl).then((data) => {
-    JSONItems = data.result;
-    
-    //console.log(JSONItems)
-    revenue = []
-    lat = []
-    lng = []
-    city = []
-    avgprice = []
-    for (let i = 0; i < JSONItems.length; i++) {
-        lat.push(JSONItems[i].lat)
-        lng.push(JSONItems[i].lng)
-        city.push(JSONItems[i].city)
-        revenue.push(JSONItems[i].sum)
-        avgprice.push(JSONItems[i].avg)
- 
-    
-    
-    L.circle([JSONItems[i].lat, JSONItems[i].lng],{
-      radius: 1.5*JSONItems[i].sum,
-      //color: getColor(features[i].properties.mag),
-      color:'blue',
-      fillcolor: 'black',
-      weight: 1,
-      opacity: 1,
-      fillOpacity: 0.8
-    })
-    .bindPopup("<h3> City " + JSONItems[i].city + "<br/>Revenue: " + JSONItems[i].sum + "<br/>Avg Unit Price:" + JSONItems[i].avg)
-    .addTo(mymap);
-    
-    }    
-  });
+
 
 
 
