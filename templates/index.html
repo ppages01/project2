@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+    
+  <link rel="shortcut icon" href="#" />
+</head>
+
+<body>
+    <div class="card"></div>
+    <div class="container-fluid" style="margin-bottom: 20px;width: 752px;margin-top: 16px;">
+        <div><div class="input-group">
+  <select class="custom-select" id="selDataset" onchange="optionChanged(this.value)" aria-label="Example select with button addon">
+    <!-- <option selected>Choose...</option>
+    <option value="1">One</option> -->
+    <!-- <option value="2">Two</option>
+    <option value="3">Three</option> -->
+  </select>
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" onClick="window.location.reload()">Reload</button>
+  </div>
+</div></div>
+    </div>
+    <div class="text-center text-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3" id="headline1" style="margin: 0px;padding-right: 7px;padding-left: 7px;height: 200px;background-color: #4fa03d;margin-left: 0px;">
+                    
+                    <!-- <h4 style="margin-top: 59px;">Total Revenue</h4>
+                    <h3 class="mb-2">5,543,543.03</h3> -->
+                </div>
+                <div class="col-md-3" id="headline2" style="margin: 0px;padding-right: 7px;padding-left: 7px;background-color: #E1542B;">
+                    
+                    <!-- <h4 style="margin-top: 59px;">Ave Revenue Monthly</h4>
+                    <h3 class="mb-2">5,543,543.03</h3> -->
+                </div>
+                <div class="col-md-3" id="headline3" style="margin: 0px;padding-right: 7px;padding-left: 7px;background-color: #FCCE58;">
+                    
+                    <!-- <h4 style="margin-top: 59px;">Best Selling Product</h4>
+                    <h3 class="mb-2">5,543,543.03</h3> -->
+                </div>
+                <div class="col-md-3" id="headline4" style="margin: 0px;padding-right: 7px;padding-left: 7px;background-color: #5388BE;">
+                    
+                    <!-- <h4 style="margin-top: 59px;">Whatever you want...</h4>
+                    <h3 class="mb-2">5,543,543.03</h3> -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"><input class="form-control-plaintext" type="text" value="Yearly Revenue" readonly="">
+                    <div><canvas  id="myChart" ></canvas></div>
+                </div>
+                <div class="col-md-3"><input class="form-control-plaintext" type="text" value="Sales by Product" readonly="">
+                    <div ><canvas id="myChart2" ></canvas></div>
+                </div>
+                <div class="col-md-3"><input class="form-control-plaintext" type="text" value="Sales by Month" readonly="">
+                    <div><canvas id="myChart3" ></canvas></div>
+                </div>
+                <div class="col-md-3"><input class="form-control-plaintext" type="text" value="TBD" readonly="">
+                    <div></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6" id="mapid" style="width: 600px; height: 575px;margin-top: 75px;">
+                    
+                </div>
+                <div class="col-md-6" style="margin-top: 75px;">
+                    <div class="table-responsive">
+                        <input class="form-control-plaintext" type="text" value="Top 10 Countries" readonly="">
+                        <table class="table" id="summarytable">
+
+                        </table>
+                                                
+                        <!-- <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Column 1</th>
+                                    <th>Column 2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Cell 1</td>
+                                    <td>Cell 2</td>
+                                </tr>
+                                <tr>
+                                    <td>Cell 3</td>
+                                    <td>Cell 4</td>
+                                </tr>
+                            </tbody>
+                        </table>  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="../static/js/bs-init.js"></script>
+    <script src="../static/js/app.js"></script>
+    <script src="../static/js/config.js"></script>
+    
+</body>
+
+</html>
