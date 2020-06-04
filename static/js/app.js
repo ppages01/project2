@@ -198,16 +198,18 @@ var jsonurl = api_call3
     lat = []
     lng = []
     city = []
+    avgprice = []
     for (let i = 0; i < JSONItems.length; i++) {
         lat.push(JSONItems[i].lat)
         lng.push(JSONItems[i].lng)
         city.push(JSONItems[i].city)
-        revenue.push(JSONItems[i].revenue)
+        revenue.push(JSONItems[i].sum)
+        avgprice.push(JSONItems[i].avg)
  
     
     
     L.circle([JSONItems[i].lat, JSONItems[i].lng],{
-      radius: 1.5*JSONItems[i].revenue,
+      radius: 1.5*JSONItems[i].sum,
       //color: getColor(features[i].properties.mag),
       color:'blue',
       fillcolor: 'black',
@@ -215,7 +217,7 @@ var jsonurl = api_call3
       opacity: 1,
       fillOpacity: 0.8
     })
-    .bindPopup("<h3> City " + JSONItems[i].city + "<br/>Revenue: " + JSONItems[i].revenue )
+    .bindPopup("<h3> City " + JSONItems[i].city + "<br/>Revenue: " + JSONItems[i].sum + "<br/>Avg Unit Price:" + JSONItems[i].avg)
     .addTo(mymap);
     
     }    
@@ -273,7 +275,7 @@ function plotPie(apicall){
         options: {
           responsive:true,
           legend: {
-            position:'right'
+            position:'bottom'
 
           },
 
@@ -373,6 +375,10 @@ var clientsChart = new Chart(context, {
     type : 'bar',
     data : barData,
     options : {
+      legend: {
+        position:'bottom'
+
+      },
         scales : {
             xAxes : [{
                 stacked : true//,
