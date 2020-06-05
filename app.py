@@ -28,9 +28,7 @@ app = Flask(__name__, static_folder='static')
 
 
 #engine = create_engine('postgresql://postgres:Password123@127.0.0.1:5432/project2')
-
 engine = create_engine('postgres://mciflyxdcdqcho:b21b8490e526450b51426d2a26de314af06eba94975a885b678a3d0c70c0445f@ec2-50-17-21-170.compute-1.amazonaws.com:5432/d5g4rqlktctgjs')
-
 #engine =create_engine(f'postgres+pg8000://{db_user}:{db_pass}@/{db_name}?unix_sock=/cloudsql/{cloud_sql_instance_name}/.s.PGSQL.5432')
 connection = engine.connect()
 
@@ -316,7 +314,7 @@ def get_top_c():
     for country, revenue in result:
         data= {}
         data['Country']=country
-        data['Revenue']=str(round(revenue,2))
+        data['Revenue']="$" + str(round(revenue,2))
         topresults.append(data)
     return jsonify(topresults)
     # return jsonify({'result': [dict(row) for row in result]})
@@ -331,7 +329,7 @@ def get_top_c1():
     for country, revenue in result:
         data= {}
         data['Country']=country
-        data['Revenue']=str(round(revenue,2))
+        data['Revenue']="$" + str(round(revenue,2))
         topresults.append(data)
     return jsonify(topresults)
     # return jsonify({'result': [dict(row) for row in result]})
@@ -346,7 +344,7 @@ def get_top_c2():
     for country, revenue in result:
         data= {}
         data['Country']=country
-        data['Revenue']=str(round(revenue,2))
+        data['Revenue']="$" + str(round(revenue,2))
         topresults.append(data)
     return jsonify(topresults)
     # return jsonify({'result': [dict(row) for row in result]})

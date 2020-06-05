@@ -161,8 +161,7 @@ Chart.pluginService.register({
 /////////////////////////////////
 
 function plotMap(api_call3){
-
-  //#####Call the api and pull the lat/lng
+  
 var jsonurl = api_call3
   
   
@@ -187,7 +186,7 @@ d3.json(jsonurl).then((data) => {
   
   L.circle([JSONItems[i].lat, JSONItems[i].lng],{
     radius: 2*JSONItems[i].sum,
-    //color: getColor(features[i].properties.mag),
+    
     color:'green',
     fillcolor: 'black',
     weight: 1,
@@ -200,8 +199,7 @@ d3.json(jsonurl).then((data) => {
   }    
 });
 
-  //var mymap = L.map('mapid').setView([37.09, -95.71], 4);
-  //Below if statement will force reload upon init and optionchanges.
+  
   var mymap = L.DomUtil.get('mapid');
   if  (mymap != null)
   {
@@ -253,7 +251,7 @@ function plotPie(apicall){
            sold.push(JSONItems[i].sum)
     
        }
-       
+      
          
        var ctx = document.getElementById("myChart2");
        var myChart = new Chart(ctx, {
@@ -305,6 +303,7 @@ function plotPie(apicall){
 //                             //
 /////////////////////////////////
 function plotstack(apicall2, apicall3, apicall4) {
+  
     
     let proda = [];
     let prodb = [];
@@ -354,6 +353,7 @@ function plotstack(apicall2, apicall3, apicall4) {
 
     
 function drawstack(proda,prodb,prodc) {
+  
 
   var barData = {
     labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],
@@ -537,6 +537,28 @@ function top10countries(apicall) {
     
   
     )};
+
+
+function clean(){
+  var table = document.getElementById("summarytable")
+    table.innerHTML = ""
+
+  document.getElementById("myChart2").remove();
+  let canvas2 = document.createElement('canvas');
+  canvas2.setAttribute('id','myChart2');
+  document.getElementById("chart2div").appendChild(canvas2); 
+
+  document.getElementById("myChart").remove();
+  let canvas = document.createElement('canvas');
+  canvas.setAttribute('id','myChart');
+  document.getElementById("chartdiv").appendChild(canvas);
+
+  document.getElementById("myChart3").remove();
+  let canvas3 = document.createElement('canvas');
+  canvas3.setAttribute('id','myChart3');
+  document.getElementById("chart3div").appendChild(canvas3);
+
+}
 /////////////////////////////////
 //                             // 
 //     INTERACTIVE FUNCTIONS   //
@@ -544,8 +566,10 @@ function top10countries(apicall) {
 /////////////////////////////////
 
   function optionChanged(id){
-    var table = document.getElementById("summarytable")
-    table.innerHTML = ""
+  clean();
+  ///clean the canvas for rewrites
+
+    
   
     if (id == 2020) {
       plotChart("/api/sales/2020");
@@ -601,7 +625,7 @@ function top10countries(apicall) {
             
       d3.json(jsonurl).then((data) =>  {
         JSONItems = data.result;
-        revenue = JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        revenue = "$" + JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
               
         totrevenue.innerHTML = `<h4 style="margin-top: 59px;">Total Revenue</h4><h3 class="mb-2">${revenue}</h3>`
               
@@ -618,7 +642,7 @@ function top10countries(apicall) {
             
       d3.json(jsonurl).then((data) =>  {
         JSONItems = data.result;
-        avg_revenue = JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        avg_revenue = "$" + JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
               
         totrevenue.innerHTML = `<h4 style="margin-top: 59px;">Avg Monthly Revenue</h4><h3 class="mb-2">${avg_revenue}</h3>`
               
@@ -653,7 +677,7 @@ function top10countries(apicall) {
       d3.json(jsonurl).then((data) =>  {
         JSONItems = data.result;
         country = JSONItems[0].country
-        revenue = JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        revenue = "$" + JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
               
         totrevenue.innerHTML = `<h4 style="margin-top: 59px;">Most Profitable Country</h4><h3 class="mb-2">${country}</h3><h4>${revenue}</h4`
               
@@ -666,6 +690,7 @@ function top10countries(apicall) {
   
 function init() 
     {
+        //myChart.destroy();
         var jsonurl = "/api/getyear"
         let selectyear = document.getElementById("selDataset");
         //the section of the webpage were the dropdown code is located.
