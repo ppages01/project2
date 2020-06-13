@@ -91,31 +91,23 @@ Chart.pluginService.register({
 //      TABLE BUILDING        //
 //                            //
 ////////////////////////////////
-
- 
-  
-  // Builds the HTML Table out of myList.
-  function buildHtmlTable(selector, apicall) {
+// Builds the HTML Table out of myList.
+function buildHtmlTable(selector, apicall) {
 
     jsonurl = apicall;
     d3.json(jsonurl).then((data) => {
      var myList0 = data;
-        
-
     // for (let i = 0; i < data.length; i++) {
     //   myList.push(data.result[i])
            
     // }
    
-    
-    console.log(myList0.slice(0,10))
     var myList = (myList0.slice(0,10))
     // var myList = [
     //   { "name": "abc", "age": 50 },
     //   { "age": "25", "hobby": "swimming" },
     //   { "name": "xyz", "hobby": "programming" }
     // ];
-
 
     var columns = addAllColumnHeaders(myList, selector);
   
@@ -127,8 +119,8 @@ Chart.pluginService.register({
         row$.append($('<td/>').html(cellValue));
       }
       $(selector).append(row$);
-    }
-  });
+      }
+    });
   }
   
   // Adds a header row to the table and returns the set of columns.
@@ -162,72 +154,57 @@ Chart.pluginService.register({
 
 function plotMap(api_call3){
   
-var jsonurl = api_call3
+  var jsonurl = api_call3
   
-  
- 
-d3.json(jsonurl).then((data) => {
-  JSONItems = data.result;
-  
-  //console.log(JSONItems)
-  revenue = []
-  lat = []
-  lng = []
-  city = []
-  avgprice = []
-  for (let i = 0; i < JSONItems.length; i++) {
-      lat.push(JSONItems[i].lat)
-      lng.push(JSONItems[i].lng)
-      city.push(JSONItems[i].city)
-      revenue.push(JSONItems[i].sum)
-      avgprice.push(JSONItems[i].avg)
+  d3.json(jsonurl).then((data) => {
+    JSONItems = data.result;
+    revenue = []
+    lat = []
+    lng = []
+    city = []
+    avgprice = []
 
-  
-  
-  L.circle([JSONItems[i].lat, JSONItems[i].lng],{
-    radius: 2*JSONItems[i].sum,
-    
-    color:'green',
-    fillcolor: 'black',
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-  })
-  .bindPopup("<h3> City " + JSONItems[i].city + "<br/>Revenue: " + JSONItems[i].sum + "<br/>Avg Unit Price:" + JSONItems[i].avg)
-  .addTo(mymap);
-  
-  }    
-});
+    for (let i = 0; i < JSONItems.length; i++) {
+        lat.push(JSONItems[i].lat)
+        lng.push(JSONItems[i].lng)
+        city.push(JSONItems[i].city)
+        revenue.push(JSONItems[i].sum)
+        avgprice.push(JSONItems[i].avg)
 
-  
+      L.circle([JSONItems[i].lat, JSONItems[i].lng], {
+        radius: 2*JSONItems[i].sum,
+        color:'green',
+        fillcolor: 'black',
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+      })
+    .bindPopup("<h3> City " + JSONItems[i].city + "<br/>Revenue: " + JSONItems[i].sum + "<br/>Avg Unit Price:" + JSONItems[i].avg)
+    .addTo(mymap);
+    }    
+  });
+
   var mymap = L.DomUtil.get('mapid');
-  if  (mymap != null)
-  {
+
+  if  (mymap != null) {
     mymap._leaflet_id = null;
     mymap = L.map('mapid').setView([37.09, -95.71], 4);
-  }
-  else
-  {
+  } else {
     mymap = L.map('mapid').setView([37.09, -95.71], 4);
   }
 
-
   L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-  maxZoom: 18,
-  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-  id: 'mapbox/light-v9',
-  tileSize: 512,
-  zoomOffset: -1,
-  accessToken: API_KEY
-}).addTo(mymap);
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+      '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox/light-v9',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: API_KEY
+  }).addTo(mymap);
 
-
-
-
-var popup = L.popup();
-
+  var popup = L.popup();
 
 }
 /////////////////////////////////
@@ -237,39 +214,32 @@ var popup = L.popup();
 /////////////////////////////////
 
 function plotPie(apicall){
+  var jsonurl = apicall;
 
-    var jsonurl = apicall
-     
-    
-    d3.json(jsonurl).then((data) => {
-       JSONItems = data.result;
-       //console.log(JSONItems)
-       product = []
-       sold = []
-       for (let i = 0; i < JSONItems.length; i++) {
-           product.push(JSONItems[i].product)
-           sold.push(JSONItems[i].sum)
-    
-       }
+  d3.json(jsonurl).then((data) => {
+    JSONItems = data.result;
+    product = [];
+    sold = [];
+    for (let i = 0; i < JSONItems.length; i++) {
+        product.push(JSONItems[i].product)
+        sold.push(JSONItems[i].sum)
+    }
       
-         
-       var ctx = document.getElementById("myChart2");
-       var myChart = new Chart(ctx, {
-         type: 'doughnut',
-         data: {
-           labels: ['Product A', 'Product B', 'Product C'],
-           datasets: [{
-             label: 'Revenue Sources',
-             data: sold,
-             backgroundColor: [
-              "#4FA03D","#E1542B","#5388BE"
-               
-             ],
-             borderColor: [
-              "#ffffff","#ffffff","#ffffff"
-               
-             ],
-             borderWidth: 1
+    var ctx = document.getElementById("myChart2");
+    var myChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Product A', 'Product B', 'Product C'],
+        datasets: [{
+          label: 'Revenue Sources',
+          data: sold,
+          backgroundColor: [
+            "#4FA03D","#E1542B","#5388BE"
+          ],
+          borderColor: [
+            "#ffffff","#ffffff","#ffffff"
+          ],
+          borderWidth: 1
            }]
          },
         
@@ -277,9 +247,7 @@ function plotPie(apicall){
           responsive:true,
           legend: {
             position:'bottom'
-
           },
-
           elements: {
             center: {
               text: 'Units Sold',
@@ -291,40 +259,32 @@ function plotPie(apicall){
             }
           }
         }
-       });
-       ///chartjs is kinda iffy on the updates.. with this help..?
-       
+     });
+  });
+};
 
-});
-}
 /////////////////////////////////
 //                             // 
 //       STACKED BAR           //
 //                             //
 /////////////////////////////////
 function plotstack(apicall2, apicall3, apicall4) {
+  let proda = [];
+  let prodb = [];
+  let prodc = [];
   
-    
-    let proda = [];
-    let prodb = [];
-    let prodc = [];
-  
-    
-    jsonurl = apicall2;
-    d3.json(jsonurl).then((data) => {
+  jsonurl = apicall2;
+  d3.json(jsonurl).then((data) => {
     JSONItems = data.result;
-        
 
     for (let i = 0; i < JSONItems.length; i++) {
-      proda.push(JSONItems[i].sum)
-           
+      proda.push(JSONItems[i].sum)  
     }
-    });
-    
-    jsonurl = apicall3;
-    d3.json(jsonurl).then((data) => {
+  });
+
+  jsonurl = apicall3;
+  d3.json(jsonurl).then((data) => {
     JSONItems = data.result;
-        
 
     for (let i = 0; i < JSONItems.length; i++) {
       prodb.push(JSONItems[i].sum)
@@ -332,71 +292,56 @@ function plotstack(apicall2, apicall3, apicall4) {
     }
    });
 
-   jsonurl = apicall4;
-    d3.json(jsonurl).then((data) => {
+  jsonurl = apicall4;
+  d3.json(jsonurl).then((data) => {
     JSONItems = data.result;
-        
 
     for (let i = 0; i < JSONItems.length; i++) {
       prodc.push(JSONItems[i].sum)
-           
     }
 
     drawstack(proda,prodb,prodc);
    });
    
-   
-
-   
-
-   
-
-    
-function drawstack(proda,prodb,prodc) {
-  
-
-  var barData = {
-    labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],
-    datasets : [{
-        label : 'Product A',
-        backgroundColor : '#4FA03D',
-        data : proda,
-    }, {
+  function drawstack(proda,prodb,prodc) {
+    var barData = {
+      labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],
+      datasets : [{
+          label : 'Product A',
+          backgroundColor : '#4FA03D',
+          data : proda,
+      }, {
         label : 'Product B',
         backgroundColor : '#E1542B',
         data : prodb,
-    }, {
+      }, {
         label : 'Product C',
         backgroundColor : '#5388BE',
         data : prodc,
-    }]
+      }]
     
-};
+    };
 
-var context = document.getElementById('myChart3').getContext('2d');
-var clientsChart = new Chart(context, {
-    type : 'bar',
-    data : barData,
-    options : {
-      legend: {
-        position:'bottom'
-
-      },
-        scales : {
-            xAxes : [{
-                stacked : true//,
-                //beginAtZero: true
-
-            }],
-            yAxes : [{
-                stacked : true,
-                beginAtZero:false
-            }]
-        }
-    }
-});
-}
-  
+    var context = document.getElementById('myChart3').getContext('2d');
+    var clientsChart = new Chart(context, {
+      type : 'bar',
+      data : barData,
+      options : {
+        legend: {
+          position:'bottom'
+        },
+          scales : {
+              xAxes : [{
+                  stacked : true,
+              }],
+              yAxes : [{
+                  stacked : true,
+                  beginAtZero:false
+              }]
+          }
+      }
+    });
+  }
 }
 
 /////////////////////////////////
@@ -407,46 +352,41 @@ var clientsChart = new Chart(context, {
 function plotChart(apicall) {
   var jsonurl = apicall
   
-
   d3.json(jsonurl).then((data) => {
     JSONItems = data.result;
-    
-    //console.log(JSONItems)
     month = []
     revenue = []
     for (let i = 0; i < JSONItems.length; i++) {
         month.push(JSONItems[i].month)
         revenue.push(JSONItems[i].sum.toFixed(2))
- 
     }
 
-  var ctx = document.getElementById('myChart');
+    var ctx = document.getElementById('myChart');
 
-var revenue = revenue;
-var frameworks = month;
+    var revenue = revenue;
+    var frameworks = month;
 
-var myChart = new Chart(ctx, {
-  type: "line",
-  data: {
-     labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],
-     datasets: [
-     {
-         label: "Revenue",
-         data: revenue,
-         backgroundColor: "rgba(78, 115, 223, 0.05)",
-         borderColor: "rgba(78, 115, 223, 1",
-         borderWidth: 1 }]},
-         
-    options: {
-      legend: {
-        display:true,
-        position:'bottom'
-      },
-      responsive: true
-      
-    }
+    var myChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"],
+        datasets: [
+        {
+            label: "Revenue",
+            data: revenue,
+            backgroundColor: "rgba(78, 115, 223, 0.05)",
+            borderColor: "rgba(78, 115, 223, 1",
+            borderWidth: 1 }]},
+            
+        options: {
+          legend: {
+            display:true,
+            position:'bottom'
+          },
+          responsive: true
+          
+        }
     });
-    
   });
 }  
 
@@ -473,31 +413,25 @@ function top10countries(apicall) {
       
     }
   
-  //console.log(country);
-  var trace1= {
-    x: revenue.slice(0,10),
-    y: country.slice(0,10),
-    type: "bar",
-    orientation: 'h',
-  };
+    var trace1= {
+      x: revenue.slice(0,10),
+      y: country.slice(0,10),
+      type: "bar",
+      orientation: 'h',
+    };
 
-  var layout = {
-    title: "Top 10 countries by Revenue"
+    var layout = {
+      title: "Top 10 countries by Revenue"
 
-  };
+    };
 
-  var data = [trace1];
+    var data = [trace1];
 
-  Plotly.newPlot("country", data,layout);
-  
-  
+    Plotly.newPlot("country", data,layout);
   }
+)};
 
-  
-
-  )};
-
-  function top10cities(apicall) {
+function top10cities(apicall) {
     var jsonurl = apicall
     let topten = document.getElementById("city");
   
@@ -512,36 +446,28 @@ function top10countries(apicall) {
         revenue.push(JSONItems[i].revenue)
         
       }
+      
+      var trace1= {
+        x: revenue.slice(0,10),
+        y: city.slice(0,10),
+        type: "bar",
+        orientation: 'h',
+      };
+  
+      var layout = {
+        title: "Top 10 cities by Revenue"
     
-    //console.log(city);
-    //console.log(revenue);
-    var trace1= {
-      x: revenue.slice(0,10),
-      y: city.slice(0,10),
-      type: "bar",
-      orientation: 'h',
-    };
-  
-    var layout = {
-      title: "Top 10 cities by Revenue"
-  
-    };
-  
-    var data = [trace1];
-  
-    Plotly.newPlot("city", data,layout);
+      };
+      var data = [trace1];
+      Plotly.newPlot("city", data,layout);
     
-    
-    }
-  
-    
-  
-    )};
+  }
+)};
 
 
 function clean(){
   var table = document.getElementById("summarytable")
-    table.innerHTML = ""
+  table.innerHTML = ""
 
   document.getElementById("myChart2").remove();
   let canvas2 = document.createElement('canvas');
@@ -567,129 +493,61 @@ function clean(){
 
   function optionChanged(id){
   clean();
-  ///clean the canvas for rewrites
-
-    
   
     if (id == 2020) {
       plotChart("/api/sales/2020");
-      plotPie("/api/sales/2020/byproducts")
-      plotMap("/api/sales/2020/map")
-      // top10countries("/api/sales/2020/topcountries")
-      // top10cities("/api/sales/2020/topcities")
-      hl1("/api/sales/2020/revenue")
-      hl2("/api/sales/2020/avg_revenue") 
-      hl3("/api/sales/2020/bestproduct") 
-      hl4("/api/sales/2020/bestcountry") 
+      plotPie("/api/sales/2020/byproducts");
+      plotMap("/api/sales/2020/map");
+      populateHeadlines(id)
       plotstack("/api/sales/2020/producta","/api/sales/2020/productb","/api/sales/2020/productc");
       buildHtmlTable("#summarytable","/api/sales/2020/topcountries");
-  
-      
     } else if (id == 2019) {
-      
       plotChart("/api/sales/2019");
       plotPie("/api/sales/2019/byproducts")
       plotMap("/api/sales/2019/map")
-      // top10countries("/api/sales/2019/topcountries")
-      // top10cities("/api/sales/2019/topcities")
-      hl1("/api/sales/2019/revenue")
-      hl2("/api/sales/2019/avg_revenue") 
-      hl3("/api/sales/2019/bestproduct") 
-      hl4("/api/sales/2019/bestcountry") 
+      populateHeadlines(id)
       plotstack("/api/sales/2019/producta","/api/sales/2019/productb","/api/sales/2019/productc");
       buildHtmlTable("#summarytable","/api/sales/2019/topcountries");
-      
-      
     }  else  {
       plotChart("/api/sales/2018");
       plotPie("/api/sales/2018/byproducts")
       plotMap("/api/sales/2018/map")
-      // top10countries("/api/sales/2018/topcountries")
-      // top10cities("/api/sales/2018/topcities")
-      hl1("/api/sales/2018/revenue")
-      hl2("/api/sales/2018/avg_revenue") 
-      hl3("/api/sales/2018/bestproduct") 
-      hl4("/api/sales/2018/bestcountry") 
+      populateHeadlines(id)
       plotstack("/api/sales/2018/producta","/api/sales/2018/productb","/api/sales/2018/productc");
       buildHtmlTable("#summarytable","/api/sales/2018/topcountries");
-  
-  
   }
   }
 
+  let headlineApiCalls = ["revenue", "avg_revenue", "bestproduct", "bestcountry"];
+  let headlineTitle = ["Total Revenue", "Avg Monthly Revenue", "Best Selling Product", "Most Profitable Country"];
 
-  function hl1(apicall) 
-  {
-      var jsonurl = apicall
-      let totrevenue = document.getElementById("headline1");
+
+  function headline(apicall, index){
+      let jsonurl = apicall;
+      let divID = document.getElementById(headlineApiCalls[index]);
             
       d3.json(jsonurl).then((data) =>  {
         JSONItems = data.result;
-        revenue = "$" + JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+        if (index === 2) {
+          headlineData = JSONItems[0].product;
+        } else if (index === 3) {
+          headlineData = JSONItems[0].country.toString() + "<br>$" + JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        } else {
+          headlineData = "$" + JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
               
-        totrevenue.innerHTML = `<h4 style="margin-top: 59px;">Total Revenue</h4><h3 class="mb-2">${revenue}</h3>`
-              
+        divID.innerHTML = `<h4>${headlineTitle[index]}</h4><h3 class="mb-2">${headlineData}</h3>`;
     }); 
-      
-      
-      
+  };
+
+  function populateHeadlines(id) {
+    for (let i = 0; i < headlineApiCalls.length; i++) {
+      headline("/api/sales/" + id + "/" + headlineApiCalls[i], i);
+    };
   }
 
-  function hl2(apicall) 
-  {
-      var jsonurl = apicall
-      let totrevenue = document.getElementById("headline2");
-            
-      d3.json(jsonurl).then((data) =>  {
-        JSONItems = data.result;
-        avg_revenue = "$" + JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              
-        totrevenue.innerHTML = `<h4 style="margin-top: 59px;">Avg Monthly Revenue</h4><h3 class="mb-2">${avg_revenue}</h3>`
-              
-    }); 
-      
-      
-      
-  }
-
-  function hl3(apicall) 
-  {
-      var jsonurl = apicall
-      let totrevenue = document.getElementById("headline3");
-            
-      d3.json(jsonurl).then((data) =>  {
-        JSONItems = data.result;
-        product = JSONItems[0].product
-              
-        totrevenue.innerHTML = `<h4 style="margin-top: 59px;">Best Selling Product</h4><h3 class="mb-2">${product}</h3>`
-              
-    }); 
-      
-      
-      
-  }
-
-  function hl4(apicall) 
-  {
-      var jsonurl = apicall
-      let totrevenue = document.getElementById("headline4");
-            
-      d3.json(jsonurl).then((data) =>  {
-        JSONItems = data.result;
-        country = JSONItems[0].country
-        revenue = "$" + JSONItems[0].revenue.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              
-        totrevenue.innerHTML = `<h4 style="margin-top: 59px;">Most Profitable Country</h4><h3 class="mb-2">${country}</h3><h4>${revenue}</h4`
-              
-    }); 
-      
-      
-      
-  }
-
-  
-function init() 
-    {
+function init() {
         //myChart.destroy();
         var jsonurl = "/api/getyear"
         let selectyear = document.getElementById("selDataset");
@@ -699,10 +557,7 @@ function init()
         
         d3.json(jsonurl).then((data) =>  {
           JSONItems = data.result;
-          //console.log(JSONItems)
-          
-          
-               
+
           for (let i = 0; i < JSONItems.length; i++) 
           {
               var option = `<option>${JSONItems[i].year}</option>`
@@ -712,30 +567,15 @@ function init()
                plotChart("/api/sales/2020");
                plotPie("/api/sales/2020/byproducts")
                plotMap("/api/sales/2020/map")
-               //top10countries("/api/sales/2020/topcountries")
-               //top10cities("/api/sales/2018/topcities")
-               hl1("/api/sales/2020/revenue") 
-               hl2("/api/sales/2020/avg_revenue") 
-               hl3("/api/sales/2020/bestproduct") 
-               hl4("/api/sales/2020/bestcountry") 
+               populateHeadlines(2020)
                plotstack("/api/sales/2020/producta","/api/sales/2020/productb","/api/sales/2020/productc");
                buildHtmlTable("#summarytable","/api/sales/2020/topcountries");
-               
-
-
-
               } else {
               selectyear.innerHTML += option;
-            
-
               }
           }
-          
       }); 
-        
-        
-        
-    }
+};
 
 
     
